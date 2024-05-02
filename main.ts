@@ -95,7 +95,7 @@ async function studentManagementSystem(){
         console.log(chalk.italic.yellow.bold(`\n\t${pay}: "\n\tYour fees has been collected":`));
         studentManagementSystem();
     }
-    else if(student.system ===chalk.italic.red.bold("Exit"))
+     else(student.system ===chalk.italic.red.bold("Exit"))
         console.log(chalk.italic.yellow.bold("\n\t<<<<<<<Thank you for using our system>>>>>>>\n\t")); 
 } 
 studentManagementSystem();
