@@ -3,13 +3,17 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 let management = [];
 let balance = 10000;
-console.log(chalk.italic.blueBright.bold("\n\t*******Welcome to the student management system*******\n\t"));
+let id = [];
+let pay = [];
+let course = [];
+let roll = [];
+console.log(chalk.italic.blueBright.bold(`\n\t*******Welcome to the student management system*******\n\t`));
 async function studentManagementSystem() {
     let student = await inquirer.prompt([
         {
             name: "system",
             type: "list",
-            message: chalk.italic.yellowBright.bold("\nPlease select an option:\n"),
+            message: chalk.italic.yellowBright.bold(`\nPlease select an option:\n`),
             choices: [
                 chalk.italic.blueBright.bold("Add new student"),
                 chalk.italic.yellowBright.bold("Student id"),
@@ -17,6 +21,7 @@ async function studentManagementSystem() {
                 chalk.italic.cyanBright.bold("Student enroll"),
                 chalk.italic.blueBright.bold("Student view balance"),
                 chalk.italic.gray.bold("Student pay tuition fees"),
+                chalk.italic.yellow.bold("Student status"),
                 chalk.italic.red.bold("Exit"),
             ]
         }
@@ -35,9 +40,9 @@ async function studentManagementSystem() {
         let idAns = await inquirer.prompt({
             name: "id",
             type: "input",
-            message: chalk.italic.green.bold("\nPlease Enter student id:\n")
+            message: chalk.italic.green.bold("\nPlease Enter a 5 digit student id:\n")
         });
-        let id = idAns.id;
+        let id = (idAns.id);
         console.log(chalk.italic.yellowBright.bold(`\n\t${id}: \n\tYour id is correct:`));
         studentManagementSystem();
     }
@@ -45,7 +50,7 @@ async function studentManagementSystem() {
         let courseAns = await inquirer.prompt({
             name: "course",
             type: "list",
-            message: chalk.italic.yellow.bold("\nPlease Enter student course:\n"),
+            message: chalk.italic.yellow.bold("\nPlease select student course:\n"),
             choices: [
                 chalk.italic.cyanBright.bold("TypeScript"),
                 chalk.italic.gray.bold("Python"),
@@ -55,7 +60,7 @@ async function studentManagementSystem() {
                 chalk.italic.blueBright.bold("Html"),
             ]
         });
-        let course = courseAns.course;
+        course.push(courseAns.course);
         console.log(chalk.italic.cyanBright.bold(`\n\t${course}`));
         studentManagementSystem();
     }
@@ -65,7 +70,7 @@ async function studentManagementSystem() {
             type: "input",
             message: chalk.italic.gray.bold("\nPlease Enter student roll number:\n")
         });
-        let roll = enrollAns.roll;
+        roll.push(enrollAns.roll);
         console.log(chalk.italic.blueBright.bold(`\n\t${roll}: \n\tyour roll number has been entered:`));
         studentManagementSystem();
     }
@@ -74,25 +79,41 @@ async function studentManagementSystem() {
         studentManagementSystem();
     }
     else if (student.system === chalk.italic.gray.bold("Student pay tuition fees")) {
-        let payAns = await inquirer.prompt({
-            name: "pay",
-            type: "list",
-            message: chalk.italic.cyan.bold("\nPlease Enter student pay amount:\n"),
-            choices: [
-                chalk.italic.blue.bold("TypeScript fees 1000"),
-                chalk.italic.gray.bold("Python fees 1500"),
-                chalk.italic.yellow.bold("JavaScript fees 2000"),
-                chalk.italic.green.bold("C++ fees 2500"),
-                chalk.italic.cyan.bold("Css fees 3000"),
-                chalk.italic.redBright.bold("Html fees 3500"),
-            ]
-        });
-        let pay = payAns.pay;
-        console.log(chalk.italic.yellow.bold(`\n\t${pay}: "\n\tYour fees has been collected":`));
+        let payAns = await inquirer.prompt([{
+                name: "pay",
+                type: "list",
+                message: chalk.italic.cyan.bold("\nPlease select student fees amount:\n"),
+                choices: [
+                    chalk.italic.blue.bold("TypeScript fees 1000"),
+                    chalk.italic.gray.bold("Python fees 1500"),
+                    chalk.italic.yellow.bold("JavaScript fees 2000"),
+                    chalk.italic.green.bold("C++ fees 2500"),
+                    chalk.italic.cyan.bold("Css fees 3000"),
+                    chalk.italic.redBright.bold("Html fees 3500"),
+                ]
+            },
+            {
+                name: "paid",
+                type: "input",
+                message: chalk.italic.blue.bold("\nPlease Enter student fees amount:\n")
+            }
+        ]);
+        pay.push(payAns.pay);
+        balance = balance - payAns.paid;
+        console.log(chalk.italic.yellow.bold(`\n\t${pay}: \n\tYour fees has been collected:`));
         studentManagementSystem();
     }
-    else
-        (student.system === chalk.italic.red.bold("Exit"));
-    console.log(chalk.italic.yellow.bold("\n\t<<<<<<<Thank you for using our system>>>>>>>\n\t"));
+    else if (student.system === chalk.italic.yellow.bold("Student status")) {
+        console.log(chalk.italic.green.bold(`\n\t++++++Status+++++`));
+        console.log(chalk.italic.greenBright.bold(`\n\tName: ${management}`));
+        console.log(chalk.italic.yellowBright.bold(`\n\tId number: ${id}`));
+        console.log(chalk.italic.cyanBright.bold(`\n\tCourse: ${course}`));
+        console.log(chalk.italic.blueBright.bold(`\n\tRoll number: ${roll}`));
+        console.log(chalk.italic.gray.bold(`\n\tBalance: ${balance}`));
+        console.log(chalk.italic.yellow.bold(`\n\tPay fees: ${pay}`));
+        studentManagementSystem();
+    }
+    else if (student.system === chalk.italic.red.bold("Exit"))
+        console.log(chalk.italic.yellow.bold("\n\t<<<<<<<Thank you for using our system>>>>>>>\n\t"));
 }
 studentManagementSystem();
