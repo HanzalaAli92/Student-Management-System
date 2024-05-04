@@ -46,7 +46,7 @@ async function studentManagementSystem(){
             type: "input",
             message: chalk.italic.green.bold("\nPlease Enter a 5 digit student id:\n")
         })
-        let id = (idAns.id);
+        id.push(idAns.id);
         console.log(chalk.italic.yellowBright.bold(`\n\t${id}: \n\tYour id is correct:`));
         studentManagementSystem();
     }
